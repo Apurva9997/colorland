@@ -160,9 +160,26 @@ main {
 }
 
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 18px;
+}
+
+.gallery .card {
+  width: 100%;
+}
+
+@media (min-width: 520px) {
+  .gallery .card {
+    width: calc((100% - 18px) / 2);
+  }
+}
+
+@media (min-width: 760px) {
+  .gallery .card {
+    width: calc((100% - 36px) / 3);
+  }
 }
 
 .card {

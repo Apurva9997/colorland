@@ -8,7 +8,7 @@ Single page. Tabs and studios toggle visibility; they are not URL routes.
 |---|---|---|
 | Desktop | 1440×900 | Crayon dock used to cover the paper (~39px) and the hint |
 | Short desktop | 1280×800 or 1200×683 | Same overlap; page used to scroll and hide the toolbar |
-| Tablet | 768×1024 | 3-column gallery; crayons may need horizontal scroll |
+| Tablet | 768×1024 | 3-column gallery (9 cards fill 3×3); crayons may need horizontal scroll |
 | Phone portrait | 390×844 | Best studio stack; ~6–7 crayons visible, rest swipe |
 | Phone landscape | 844×390 | Used to collapse the drawing to ~128px; header must hide; crayons go to a right-hand strip |
 
@@ -103,6 +103,9 @@ Join the Dots success hint is "Ice cream! You joined every dot."
 10. Quiz wrong answer: pink flash only, no toast.
 11. Empty `#practice-step` still occupies `min-width: 3ch`.
 12. No `:focus-visible` ring (Tab through mute → tabs → cards).
+13. Desktop 4-column gallery with a leftover single card on the last row (9 items). Galleries should be 3×3 from ~760px up; leftover cards on 2-col should be centered.
+
+Nine coloring cards and nine letter cards must fill a 3×3 grid at 1440×900 and 768×1024 — no orphan last row.
 
 ## Console / a11y extras
 
