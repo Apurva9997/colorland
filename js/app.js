@@ -1,4 +1,5 @@
 import { COLORING_PAGES } from "./pages.js";
+import { ui } from "./ui.js";
 
 export function boot() {
   const STORAGE_KEY = "colorland-v1";
@@ -26,24 +27,23 @@ export function boot() {
     { hex: "magic", name: "Magic" }
   ];
 
+  const home = document.getElementById("home");
   const galleryEl = document.getElementById("gallery");
   const galleryWrap = document.getElementById("gallery-wrap");
+  const practiceWrap = document.getElementById("practice-wrap");
+  const tabColor = document.getElementById("tab-color");
+  const tabLetters = document.getElementById("tab-letters");
   const studio = document.getElementById("studio");
   const paper = document.getElementById("paper");
   const paletteEl = document.getElementById("palette");
   const titleEl = document.getElementById("studio-title");
   const hintEl = document.getElementById("hint");
   const swatchNow = document.getElementById("swatch-now");
-  const toastEl = document.getElementById("toast");
-  const muteBtn = document.getElementById("mute-btn");
   const resetModal = document.getElementById("reset-modal");
-  const yayEl = document.getElementById("yay");
 
   let currentId = null;
   let selected = COLORS[2].hex;
   let undoStack = [];
-  let muted = false;
-  let audioCtx = null;
   let celebrated = false;
 
   function loadStore() {
@@ -151,7 +151,7 @@ export function boot() {
         : hex === "#ffffff"
           ? "Eraser on. Tap a spot to make it white again."
           : "Now tap any part of the picture.";
-    blip(520);
+    ui.blip(520);
   }
 
   function updateSwatch() {
@@ -172,7 +172,7 @@ export function boot() {
     applyFills(svg, loadStore()[id]);
     paper.innerHTML = "";
     paper.appendChild(svg);
-    galleryWrap.classList.add("is-hidden");
+    home.classList.add("is-hidden");
     studio.classList.add("is-open");
     hintEl.textContent = "Pick a crayon, then tap a spot to fill it.";
     svg.addEventListener("pointerdown", onFill);
@@ -182,7 +182,7 @@ export function boot() {
     persistCurrent();
     currentId = null;
     studio.classList.remove("is-open");
-    galleryWrap.classList.remove("is-hidden");
+    home.classList.remove("is-hidden");
     renderGallery();
   }
 
@@ -203,19 +203,19 @@ export function boot() {
     setTimeout(() => el.classList.remove("is-flash"), 160);
     undoStack.push({ el, prev });
     persistCurrent();
-    blip(340 + Math.random() * 180);
+    ui.blip(340 + Math.random() * 180);
     maybeCelebrate();
   }
 
   function undo() {
     const last = undoStack.pop();
     if (!last) {
-      showToast("Nothing to undo yet.");
+      ui.showToast("Nothing to undo yet.");
       return;
     }
     last.el.setAttribute("fill", last.prev);
     persistCurrent();
-    blip(240);
+    ui.blip(240);
   }
 
   function resetPage() {
@@ -226,7 +226,7 @@ export function boot() {
     celebrated = false;
     persistCurrent();
     hintEl.textContent = "Fresh page! Pick a crayon and tap.";
-    showToast("All clean. Color away!");
+    ui.showToast("All clean. Color away!");
   }
 
   function maybeCelebrate() {
@@ -235,10 +235,10 @@ export function boot() {
     const fills = readFills(svg);
     if (fills.length && coloredCount(fills) === fills.length) {
       celebrated = true;
-      confetti();
-      showToast("You colored the whole picture!");
+      ui.confetti();
+      ui.showToast("You colored the whole picture!");
       hintEl.textContent = "You finished it! Save it or pick another picture.";
-      fanfare();
+      ui.fanfare();
     }
   }
 
@@ -266,67 +266,13 @@ export function boot() {
       a.href = canvas.toDataURL("image/png");
       a.download = `colorland-${currentId}.png`;
       a.click();
-      showToast("Saved a picture!");
+      ui.showToast("Saved a picture!");
     };
     img.onerror = () => {
       URL.revokeObjectURL(url);
-      showToast("Could not save. Try another browser.");
+      ui.showToast("Could not save. Try another browser.");
     };
     img.src = url;
-  }
-
-  function showToast(message) {
-    toastEl.textContent = message;
-    toastEl.classList.add("show");
-    clearTimeout(showToast.t);
-    showToast.t = setTimeout(() => toastEl.classList.remove("show"), 1800);
-  }
-
-  function confetti() {
-    yayEl.innerHTML = "";
-    const colors = MAGIC;
-    for (let i = 0; i < 42; i += 1) {
-      const bit = document.createElement("span");
-      bit.className = "confetti";
-      bit.style.left = Math.random() * 100 + "%";
-      bit.style.background = colors[i % colors.length];
-      bit.style.animationDelay = Math.random() * 0.4 + "s";
-      bit.style.transform = `rotate(${Math.random() * 90}deg)`;
-      yayEl.appendChild(bit);
-    }
-    setTimeout(() => {
-      yayEl.innerHTML = "";
-    }, 2200);
-  }
-
-  function ensureAudio() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === "suspended") audioCtx.resume();
-    return audioCtx;
-  }
-
-  function blip(freq) {
-    if (muted) return;
-    try {
-      const ctx = ensureAudio();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "triangle";
-      osc.frequency.value = freq;
-      gain.gain.value = 0.05;
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
-      osc.stop(ctx.currentTime + 0.13);
-    } catch {
-      /* ignore audio errors */
-    }
-  }
-
-  function fanfare() {
-    if (muted) return;
-    [523, 659, 784].forEach((f, i) => setTimeout(() => blip(f), i * 120));
   }
 
   document.getElementById("back-btn").addEventListener("click", closeStudio);
@@ -342,10 +288,21 @@ export function boot() {
     resetModal.classList.remove("is-open");
     resetPage();
   });
-  muteBtn.addEventListener("click", () => {
-    muted = !muted;
-    muteBtn.textContent = muted ? "🔇" : "🔊";
-    muteBtn.setAttribute("aria-label", muted ? "Unmute sounds" : "Mute sounds");
+  tabColor.addEventListener("click", () => {
+    tabColor.classList.add("is-on");
+    tabLetters.classList.remove("is-on");
+    tabColor.setAttribute("aria-selected", "true");
+    tabLetters.setAttribute("aria-selected", "false");
+    galleryWrap.classList.remove("is-hidden");
+    practiceWrap.classList.add("is-hidden");
+  });
+  tabLetters.addEventListener("click", () => {
+    tabLetters.classList.add("is-on");
+    tabColor.classList.remove("is-on");
+    tabLetters.setAttribute("aria-selected", "true");
+    tabColor.setAttribute("aria-selected", "false");
+    practiceWrap.classList.remove("is-hidden");
+    galleryWrap.classList.add("is-hidden");
   });
 
   renderPalette();

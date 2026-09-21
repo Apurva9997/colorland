@@ -6,8 +6,8 @@
     <meta name="theme-color" content="#fff3e4" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Colorland" />
-    <title>Colorland — Color the pictures</title>
-    <meta name="description" content="A coloring book for kids. Pick a picture, pick a color, and tap to fill. No drawing needed." />
+    <title>Colorland — Color and letters</title>
+    <meta name="description" content="A coloring book and letter practice for kids. Color pictures, trace letters, match sounds, and more." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -31,7 +31,7 @@
         </div>
         <div>
           <h1>Colorland</h1>
-          <p>Tap to color. No drawing!</p>
+          <p>Color pictures. Practice letters.</p>
         </div>
       </div>
       <div class="header-actions">
@@ -40,12 +40,27 @@
     </header>
 
     <main>
-      <section class="gallery-wrap" id="gallery-wrap">
-        <div class="hero">
-          <h2>Pick a picture to color</h2>
-          <p>Choose a color, then tap any part of the drawing.</p>
+      <section id="home">
+        <div class="mode-tabs" role="tablist" aria-label="Choose Color or Letters">
+          <button class="mode-tab is-on" id="tab-color" type="button" role="tab" aria-selected="true">Color</button>
+          <button class="mode-tab" id="tab-letters" type="button" role="tab" aria-selected="false">Letters</button>
         </div>
-        <div class="gallery" id="gallery"></div>
+
+        <div class="gallery-wrap" id="gallery-wrap">
+          <div class="hero">
+            <h2>Pick a picture to color</h2>
+            <p>Choose a color, then tap any part of the drawing.</p>
+          </div>
+          <div class="gallery" id="gallery"></div>
+        </div>
+
+        <div class="gallery-wrap is-hidden" id="practice-wrap">
+          <div class="hero">
+            <h2>Letter practice</h2>
+            <p>Trace, match, circle, and hunt — like school worksheets, but tap-friendly.</p>
+          </div>
+          <div class="gallery" id="practice-gallery"></div>
+        </div>
       </section>
 
       <section class="studio" id="studio">
@@ -72,6 +87,21 @@
           </div>
           <div class="palette" id="palette" role="listbox" aria-label="Color palette"></div>
         </div>
+      </section>
+
+      <section class="studio" id="practice-studio">
+        <div class="studio-bar">
+          <button class="tool-btn" id="practice-back" type="button">← Letters</button>
+          <h2 class="studio-title" id="practice-title">Practice</h2>
+          <div class="tools">
+            <span class="step-pill" id="practice-step"></span>
+            <button class="tool-btn" id="practice-reset" type="button">Start over</button>
+          </div>
+        </div>
+        <div class="paper-wrap">
+          <div class="paper practice-paper" id="practice-paper"></div>
+        </div>
+        <p class="hint" id="practice-hint"></p>
       </section>
     </main>
 
