@@ -10,7 +10,7 @@ export function boot() {
     { hex: "#ff6b6b", name: "Cherry" },
     { hex: "#ff922b", name: "Orange" },
     { hex: "#ffd166", name: "Sun" },
-    { hex: "#ffe066", name: "Lemon" },
+    { hex: "#e6ff6b", name: "Lemon" },
     { hex: "#8ce99a", name: "Leaf" },
     { hex: "#20c997", name: "Mint" },
     { hex: "#4dabf7", name: "Sky" },
