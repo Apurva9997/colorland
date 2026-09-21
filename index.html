@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#fff3e4" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Colorland" />
+    <title>Colorland — Color the pictures</title>
+    <meta name="description" content="A coloring book for kids. Pick a picture, pick a color, and tap to fill. No drawing needed." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='14' width='64' height='64' fill='%23FFD166'/%3E%3Cpath d='M18 48 L28 12 L36 12 L26 48Z' fill='%23FF6B6B'/%3E%3Cpath d='M30 48 L40 12 L48 12 L38 48Z' fill='%235EC8E3'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="10" width="14" height="44" rx="4" fill="#ff6b6b" stroke="#2b2430" stroke-width="3" />
+            <rect x="25" y="6" width="14" height="48" rx="4" fill="#ffd166" stroke="#2b2430" stroke-width="3" />
+            <rect x="42" y="14" width="14" height="40" rx="4" fill="#5ec8e3" stroke="#2b2430" stroke-width="3" />
+          </svg>
+        </div>
+        <div>
+          <h1>Colorland</h1>
+          <p>Tap to color. No drawing!</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="mute-btn" type="button" aria-label="Mute sounds">🔊</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="gallery-wrap" id="gallery-wrap">
+        <div class="hero">
+          <h2>Pick a picture to color</h2>
+          <p>Choose a color, then tap any part of the drawing.</p>
+        </div>
+        <div class="gallery" id="gallery"></div>
+      </section>
+
+      <section class="studio" id="studio">
+        <div class="studio-bar">
+          <button class="tool-btn" id="back-btn" type="button">← Pictures</button>
+          <h2 class="studio-title" id="studio-title">Coloring</h2>
+          <div class="tools">
+            <button class="tool-btn" id="undo-btn" type="button">Undo</button>
+            <button class="tool-btn" id="reset-btn" type="button">Start over</button>
+            <button class="tool-btn" id="save-btn" type="button">Save</button>
+          </div>
+        </div>
+
+        <div class="paper-wrap">
+          <div class="paper" id="paper"></div>
+        </div>
+
+        <p class="hint" id="hint">Pick a crayon, then tap a spot to fill it.</p>
+
+        <div class="palette-dock">
+          <div class="palette-label">
+            <span>Crayons</span>
+            <span>Using <i class="swatch-now" id="swatch-now"></i></span>
+          </div>
+          <div class="palette" id="palette" role="listbox" aria-label="Color palette"></div>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status"></div>
+    <div class="yay" id="yay" aria-hidden="true"></div>
+
+    <div class="modal" id="reset-modal" role="dialog" aria-modal="true" aria-labelledby="reset-title">
+      <div class="modal-card">
+        <h3 id="reset-title">Start over?</h3>
+        <p>This clears the colors on this picture.</p>
+        <div class="modal-actions">
+          <button class="tool-btn" id="reset-no" type="button">Keep coloring</button>
+          <button class="tool-btn" id="reset-yes" type="button">Start over</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>
