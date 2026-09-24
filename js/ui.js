@@ -74,6 +74,7 @@ export const ui = {
       ui.muted = !ui.muted;
       muteBtn.textContent = ui.muted ? "🔇" : "🔊";
       muteBtn.setAttribute("aria-label", ui.muted ? "Unmute sounds" : "Mute sounds");
+      if (ui.muted) window.speechSynthesis?.cancel();
     });
   }
 };

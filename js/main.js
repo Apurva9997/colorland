@@ -1,6 +1,7 @@
 import * as amplitude from '@amplitude/unified';
 import { boot } from "./app.js";
 import { bootPractice } from "./practice.js";
+import { bootPhonics } from "./phonics.js";
 import { ui } from "./ui.js";
 
 // Amplitude ingestion key — public by design; move to an env var when you set up environments.
@@ -10,3 +11,4 @@ amplitude.track('Viewed Home Page', { prompt_version: 'BA400.4' }); // helps imp
 ui.bindMute();
 boot();
 bootPractice();
+bootPhonics();

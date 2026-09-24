@@ -7,8 +7,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Colorland" />
-    <title>Colorland — Color and letters</title>
-    <meta name="description" content="A coloring book and letter practice for kids. Color pictures, trace letters, match sounds, and more." />
+    <title>Colorland — Color, letters, and sounds</title>
+    <meta name="description" content="A coloring book and letter practice for kids. Color pictures, trace letters, and play the A to M sound fight." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -42,9 +42,10 @@
 
     <main>
       <section id="home">
-        <div class="mode-tabs" role="tablist" aria-label="Choose Color or Letters">
+        <div class="mode-tabs" role="tablist" aria-label="Choose Color, Letters, or Sounds">
           <button class="mode-tab is-on" id="tab-color" type="button" role="tab" aria-selected="true">Color</button>
           <button class="mode-tab" id="tab-letters" type="button" role="tab" aria-selected="false">Letters</button>
+          <button class="mode-tab" id="tab-sounds" type="button" role="tab" aria-selected="false">Sounds</button>
         </div>
 
         <div class="gallery-wrap" id="gallery-wrap">
@@ -53,6 +54,18 @@
             <p>Choose a color, then tap any part of the drawing.</p>
           </div>
           <div class="gallery" id="gallery"></div>
+        </div>
+
+        <div class="gallery-wrap is-hidden" id="phonics-wrap">
+          <div class="hero">
+            <h2>Sound fight</h2>
+            <p>Hear the sound, name the picture, or find the letter. A to M.</p>
+          </div>
+          <div class="gallery" id="phonics-gallery">
+            <button class="card" id="phonics-card" type="button" data-game="sounds"></button>
+            <button class="card" id="book-card" type="button" data-game="book"></button>
+            <button class="card" id="letters-card" type="button" data-game="letters"></button>
+          </div>
         </div>
 
         <div class="gallery-wrap is-hidden" id="practice-wrap">
@@ -88,6 +101,21 @@
           </div>
           <div class="palette" id="palette" role="listbox" aria-label="Color palette"></div>
         </div>
+      </section>
+
+      <section class="studio" id="phonics-studio">
+        <div class="studio-bar">
+          <button class="tool-btn" id="phonics-back" type="button">← Sounds</button>
+          <h2 class="studio-title" id="phonics-title">Sound Fight</h2>
+          <div class="tools">
+            <span class="step-pill" id="phonics-step"></span>
+            <button class="tool-btn" id="phonics-reset" type="button">Again</button>
+          </div>
+        </div>
+        <div class="paper-wrap">
+          <div class="paper practice-paper" id="phonics-paper"></div>
+        </div>
+        <p class="hint" id="phonics-hint">Listen, then tap the picture.</p>
       </section>
 
       <section class="studio" id="practice-studio">

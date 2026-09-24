@@ -33,6 +33,8 @@ export function boot() {
   const practiceWrap = document.getElementById("practice-wrap");
   const tabColor = document.getElementById("tab-color");
   const tabLetters = document.getElementById("tab-letters");
+  const tabSounds = document.getElementById("tab-sounds");
+  const phonicsWrap = document.getElementById("phonics-wrap");
   const studio = document.getElementById("studio");
   const paper = document.getElementById("paper");
   const paletteEl = document.getElementById("palette");
@@ -288,22 +290,26 @@ export function boot() {
     resetModal.classList.remove("is-open");
     resetPage();
   });
-  tabColor.addEventListener("click", () => {
-    tabColor.classList.add("is-on");
-    tabLetters.classList.remove("is-on");
-    tabColor.setAttribute("aria-selected", "true");
-    tabLetters.setAttribute("aria-selected", "false");
-    galleryWrap.classList.remove("is-hidden");
-    practiceWrap.classList.add("is-hidden");
-  });
-  tabLetters.addEventListener("click", () => {
-    tabLetters.classList.add("is-on");
-    tabColor.classList.remove("is-on");
-    tabLetters.setAttribute("aria-selected", "true");
-    tabColor.setAttribute("aria-selected", "false");
-    practiceWrap.classList.remove("is-hidden");
-    galleryWrap.classList.add("is-hidden");
-  });
+  function showTab(which) {
+    const tabs = [
+      [tabColor, galleryWrap, "color"],
+      [tabLetters, practiceWrap, "letters"],
+      [tabSounds, phonicsWrap, "sounds"]
+    ];
+    tabs.forEach(([tab, wrap, name]) => {
+      const on = name === which;
+      tab.classList.toggle("is-on", on);
+      tab.setAttribute("aria-selected", on ? "true" : "false");
+      wrap.classList.toggle("is-hidden", !on);
+    });
+  }
+
+  tabColor.addEventListener("click", () => showTab("color"));
+  tabLetters.addEventListener("click", () => showTab("letters"));
+  tabSounds.addEventListener("click", () => showTab("sounds"));
+  if (new URLSearchParams(location.search).has("sounds") || location.hash === "#sounds") {
+    showTab("sounds");
+  }
 
   renderPalette();
   renderGallery();
