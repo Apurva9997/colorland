@@ -123,7 +123,7 @@ const GAMES = {
     line: () => "What is this?",
     say: () => "What is this?",
     ask: () => "Tap the picture.",
-    cheer: (letter) => `Yes! ${article(letter.word)} ${letter.word}.`,
+    cheer: (letter) => `Yes! It is ${article(letter.word)} ${letter.word}.`,
     win: "You named the pictures in the book."
   },
   letters: {
@@ -302,21 +302,29 @@ export function bootPhonics() {
     locked = true;
     btn?.classList.add("is-hit");
     const monster = paper.querySelector("#monster");
-    monster?.classList.add("is-zap");
-    ui.blip(620);
-    ui.showToast(game().cheer(letter));
+    monster?.classList.add("is-talking");
+    ui.blip(420);
     bump(game().store, letter.ch);
     const starRow = paper.querySelector(".monster-stars");
     if (starRow) starRow.textContent = starsFor(letter.ch);
-    later(() => {
-      round += 1;
-      if (round >= LETTERS.length) {
-        win();
-        return;
-      }
-      index = (index + 1) % LETTERS.length;
-      startRound();
-    }, 900);
+    const cheer = game().cheer(letter);
+    const line = paper.querySelector("#fight-line");
+    if (line) line.textContent = cheer;
+    hintEl.textContent = "Listen.";
+    const started = Date.now();
+    const hold = 4000;
+    speak(cheer).finally(() => {
+      monster?.classList.remove("is-talking");
+      later(() => {
+        round += 1;
+        if (round >= LETTERS.length) {
+          win();
+          return;
+        }
+        index = (index + 1) % LETTERS.length;
+        startRound();
+      }, Math.max(0, hold - (Date.now() - started)));
+    });
   }
 
   function win() {
