@@ -110,7 +110,7 @@ const GAMES = {
     preview: "A",
     monster: "👾",
     line: (letter) => `${letter.ch} says ${letter.sound}.`,
-    say: (letter) => letter.line,
+    say: (letter) => `${letter.ch} says ${letter.sound}.`,
     ask: () => "Tap the picture.",
     cheer: (letter) => `Yes! ${letter.ch} says ${letter.sound}, ${letter.word}.`,
     win: "You know the sounds A to M."
