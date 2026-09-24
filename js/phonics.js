@@ -109,9 +109,10 @@ const GAMES = {
     store: STORE,
     preview: "A",
     monster: "👾",
-    line: (letter) => letter.line,
-    ask: (letter) => `Tap the ${letter.word}.`,
-    cheer: (letter) => `${letter.ch} says ${letter.sound}!`,
+    line: (letter) => `${letter.ch} says ${letter.sound}.`,
+    say: (letter) => letter.line,
+    ask: () => "Tap the picture.",
+    cheer: (letter) => `Yes! ${letter.ch} says ${letter.sound}, ${letter.word}.`,
     win: "You know the sounds A to M."
   },
   book: {
@@ -119,9 +120,10 @@ const GAMES = {
     store: BOOK_STORE,
     preview: "🦊",
     monster: "",
-    line: (letter) => `What is this? It is ${article(letter.word)} ${letter.word}.`,
-    ask: (letter) => `Tap ${letter.word}.`,
-    cheer: (letter) => letter.word,
+    line: () => "What is this?",
+    say: () => "What is this?",
+    ask: () => "Tap the picture.",
+    cheer: (letter) => `Yes! ${article(letter.word)} ${letter.word}.`,
     win: "You named the pictures in the book."
   },
   letters: {
@@ -129,9 +131,10 @@ const GAMES = {
     store: FIND_STORE,
     preview: "M",
     monster: "🎈",
-    line: (letter) => `Find the letter ${letter.ch}.`,
-    ask: (letter) => `Tap the letter ${letter.ch}.`,
-    cheer: (letter) => `That is ${letter.ch}!`,
+    line: () => "Find the letter.",
+    say: (letter) => `Find the letter ${letter.ch}.`,
+    ask: () => "Tap the letter you heard.",
+    cheer: (letter) => `Yes! That is ${letter.ch}.`,
     win: "You found every letter A to M."
   }
 };
@@ -233,7 +236,9 @@ export function bootPhonics() {
     hintEl.textContent = "Listen…";
     const face = mode === "book"
       ? `<div class="monster-face book-face">${pic(letter.pic)}</div>`
-      : `<div class="monster-face" style="background:${letter.color}">${letter.ch}</div>`;
+      : mode === "letters"
+        ? `<div class="monster-face letter-hide" aria-hidden="true">?</div>`
+        : `<div class="monster-face" style="background:${letter.color}">${letter.ch}</div>`;
     paper.innerHTML = `
       <div class="fight">
         <div class="fight-sky">
@@ -254,8 +259,10 @@ export function bootPhonics() {
       btn.dataset.ch = choice.ch;
       if (mode === "letters") {
         btn.innerHTML = `<span class="find-letter" style="background:${choice.color}">${choice.ch}</span>`;
+        btn.setAttribute("aria-label", `Letter ${choice.ch}`);
       } else {
-        btn.innerHTML = `${pic(choice.pic)}<span>${choice.word}</span>`;
+        btn.innerHTML = pic(choice.pic);
+        btn.setAttribute("aria-label", choice.word);
       }
       btn.addEventListener("click", () => onPick(choice, letter));
       picks.appendChild(btn);
@@ -272,7 +279,7 @@ export function bootPhonics() {
     const line = paper.querySelector("#fight-line");
     if (line) line.textContent = g.line(letter);
     hintEl.textContent = g.ask(letter);
-    await speak(g.line(letter));
+    await speak(g.say ? g.say(letter) : g.line(letter));
     monster?.classList.remove("is-talking");
     if (!fromTap) locked = false;
   }

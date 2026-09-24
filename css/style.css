@@ -838,6 +838,11 @@ svg .region-bg {
   border-radius: 28px;
 }
 
+.monster-face.letter-hide {
+  background: #fff;
+  color: var(--muted, #6d6475);
+}
+
 .find-letter {
   width: 72px;
   height: 72px;
