@@ -1,4 +1,5 @@
 import { ui } from "./ui.js";
+import { speak } from "./voice.js";
 
 const WRITE_STORE = "colorland-numbers-write-v1";
 const COUNT_STORE = "colorland-numbers-count-v1";
@@ -57,36 +58,6 @@ function bump(key, id) {
   const store = loadMap(key);
   store[id] = Math.min((store[id] || 0) + 1, 3);
   localStorage.setItem(key, JSON.stringify(store));
-}
-
-function speak(text) {
-  if (ui.muted || !window.speechSynthesis) return Promise.resolve();
-  return new Promise((resolve) => {
-    let done = false;
-    const finish = () => {
-      if (done) return;
-      done = true;
-      resolve();
-    };
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 0.82;
-    utter.pitch = 1.05;
-    const voices = window.speechSynthesis.getVoices?.() || [];
-    const voice =
-      voices.find((v) => /Rishi|Tara|Aman|Veena/.test(v.name)) ||
-      voices.find((v) => /en[-_]IN/i.test(v.lang)) ||
-      voices.find((v) => /^en/i.test(v.lang)) ||
-      null;
-    if (voice) utter.voice = voice;
-    utter.onend = finish;
-    utter.onerror = finish;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utter);
-    setTimeout(() => {
-      if (!window.speechSynthesis.speaking && !window.speechSynthesis.pending) finish();
-    }, 700);
-    setTimeout(finish, 5000);
-  });
 }
 
 function shuffle(list) {

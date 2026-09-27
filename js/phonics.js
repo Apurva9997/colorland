@@ -1,4 +1,5 @@
 import { ui } from "./ui.js";
+import { speak } from "./voice.js";
 
 const STORE = "colorland-phonics-v1";
 const BOOK_STORE = "colorland-book-v1";
@@ -23,8 +24,6 @@ const LETTERS = [
   { ch: "M", sound: "m", word: "monkey", pic: "monkey", color: "#c08552", line: "M says m, monkey." }
 ];
 
-const VOICE_ORDER = ["Rishi", "Tara", "Aman", "Veena", "Samantha", "Daniel"];
-
 // Book drawings, served from /abc. Names are a fixed map, never a path.
 const PIC_FILE = { icecream: "ice-cream" };
 
@@ -45,44 +44,6 @@ function bump(key, ch) {
   const store = loadMap(key);
   store[ch] = (store[ch] || 0) + 1;
   localStorage.setItem(key, JSON.stringify(store));
-}
-
-function pickVoice() {
-  const voices = window.speechSynthesis?.getVoices?.() || [];
-  for (const name of VOICE_ORDER) {
-    const hit = voices.find((v) => v.name === name || v.name.startsWith(name));
-    if (hit) return hit;
-  }
-  return (
-    voices.find((v) => /en[-_]IN/i.test(v.lang)) ||
-    voices.find((v) => /^en/i.test(v.lang)) ||
-    null
-  );
-}
-
-function speak(text) {
-  if (ui.muted || !window.speechSynthesis) return Promise.resolve();
-  return new Promise((resolve) => {
-    let done = false;
-    const finish = () => {
-      if (done) return;
-      done = true;
-      resolve();
-    };
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 0.82;
-    utter.pitch = 1.05;
-    const voice = pickVoice();
-    if (voice) utter.voice = voice;
-    utter.onend = finish;
-    utter.onerror = finish;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utter);
-    setTimeout(() => {
-      if (!window.speechSynthesis.speaking && !window.speechSynthesis.pending) finish();
-    }, 700);
-    setTimeout(finish, 5000);
-  });
 }
 
 function shuffle(list) {
