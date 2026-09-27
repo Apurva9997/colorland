@@ -213,6 +213,7 @@ export function bootPhonics() {
   }
 
   function closeGame() {
+    if (!studio.classList.contains("is-open")) return;
     clearTimers();
     studio.classList.remove("is-open");
     home.classList.remove("is-hidden");

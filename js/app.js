@@ -34,7 +34,9 @@ export function boot() {
   const tabColor = document.getElementById("tab-color");
   const tabLetters = document.getElementById("tab-letters");
   const tabSounds = document.getElementById("tab-sounds");
+  const tabNumbers = document.getElementById("tab-numbers");
   const phonicsWrap = document.getElementById("phonics-wrap");
+  const numbersWrap = document.getElementById("numbers-wrap");
   const studio = document.getElementById("studio");
   const paper = document.getElementById("paper");
   const paletteEl = document.getElementById("palette");
@@ -294,7 +296,8 @@ export function boot() {
     const tabs = [
       [tabColor, galleryWrap, "color"],
       [tabLetters, practiceWrap, "letters"],
-      [tabSounds, phonicsWrap, "sounds"]
+      [tabSounds, phonicsWrap, "sounds"],
+      [tabNumbers, numbersWrap, "numbers"]
     ];
     tabs.forEach(([tab, wrap, name]) => {
       const on = name === which;
@@ -307,9 +310,10 @@ export function boot() {
   tabColor.addEventListener("click", () => showTab("color"));
   tabLetters.addEventListener("click", () => showTab("letters"));
   tabSounds.addEventListener("click", () => showTab("sounds"));
-  if (new URLSearchParams(location.search).has("sounds") || location.hash === "#sounds") {
-    showTab("sounds");
-  }
+  tabNumbers.addEventListener("click", () => showTab("numbers"));
+  const params = new URLSearchParams(location.search);
+  if (params.has("numbers") || location.hash === "#numbers") showTab("numbers");
+  else if (params.has("sounds") || location.hash === "#sounds") showTab("sounds");
 
   renderPalette();
   renderGallery();

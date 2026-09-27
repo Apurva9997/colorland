@@ -2,6 +2,7 @@ import * as amplitude from '@amplitude/unified';
 import { boot } from "./app.js";
 import { bootPractice } from "./practice.js";
 import { bootPhonics } from "./phonics.js";
+import { bootNumbers } from "./numbers.js";
 import { ui } from "./ui.js";
 
 // Amplitude ingestion key — public by design; move to an env var when you set up environments.
@@ -12,3 +13,4 @@ ui.bindMute();
 boot();
 bootPractice();
 bootPhonics();
+bootNumbers();
