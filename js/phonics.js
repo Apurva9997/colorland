@@ -5,7 +5,7 @@ const STORE = "colorland-phonics-v1";
 const BOOK_STORE = "colorland-book-v1";
 const FIND_STORE = "colorland-find-letter-v1";
 
-// Phonic sounds A–M, Indian nursery style.
+// Phonic sounds A–M, early letter-sound style.
 // The sound is the lesson. The word is the memory hook.
 // "A says a, alligator" — not the letter name by itself.
 const LETTERS = [
@@ -24,7 +24,7 @@ const LETTERS = [
   { ch: "M", sound: "m", word: "monkey", pic: "monkey", color: "#c08552", line: "M says m, monkey." }
 ];
 
-// Book drawings, served from /abc. Names are a fixed map, never a path.
+// ABC drawings, served from /abc. Names are a fixed map, never a path.
 const PIC_FILE = { icecream: "ice-cream" };
 
 function pic(name) {
